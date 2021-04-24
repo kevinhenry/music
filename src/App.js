@@ -1,25 +1,22 @@
-import logo from './logo.svg';
+import React from 'react';
+import { withAuth0 } from '@auth0/auth0-react';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    const { user, isAuthenticated } = this.props.auth0;
+    console.log(user);
+    // ternaries are WTF: what ? true : false
+    // {condition ? truevalue : falsevalue }
+    return <>
+      <h1>Music</h1>
+      {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+      {isAuthenticated ? user.name : ''}
+      {isAuthenticated ? <img src={user.picture} /> : ''}
+    </>
+  }
 }
-
-export default App;
+// call wihtAuth0 here to give me access to auth0 props
+export default withAuth0(App);
